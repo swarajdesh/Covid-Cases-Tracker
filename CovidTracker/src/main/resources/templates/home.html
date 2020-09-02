@@ -12,7 +12,11 @@
 <body>
 <h1>Covid Cases Tracker</h1>
 <p>This application lists the current number of covid cases around the world</p>
-<p th:text="${testName}"></p>
+
+<div class="jumbotron">
+    <h1 class="display-4" th:text="${totalCases}"></h1>
+    <p class="lead">Total Covid cases reported till date</p>
+</div>
 
 <table>
     <tr>
