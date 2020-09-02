@@ -25,27 +25,35 @@ public class CovidDataService {
 
     private List<LocationStats> allStats = new ArrayList<>();
 
+    public List<LocationStats> getAllStats() {
+        return allStats;
+    }
+
     //After constructing the instatnce of the service execute thgis
     @PostConstruct
     //to run this at daily basis
     @Scheduled(cron = "* * 1 * * *")  //schedule to run about every particular interval
     public void fetchVirusData() throws IOException, InterruptedException {
         List<LocationStats> newStats = new ArrayList<>();
+
         HttpClient client = HttpClient.newHttpClient();
         //creating a request using builder pattern
         HttpRequest request  =  HttpRequest.newBuilder()
                 .uri(URI.create(VIRUS_DATA_URL))
                 .build();
        HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-    //   System.out.println(httpResponse.body());
+
         StringReader csvBodyReader = new StringReader(httpResponse.body());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
         for (CSVRecord record : records) {
             LocationStats locationStat = new LocationStats();
             locationStat.setState(record.get("Province/State"));
-            locationStat.setCountry(record.get("Province/State"));
-
+            locationStat.setCountry(record.get("Country/Region"));
+            locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
+            System.out.println(locationStat);
+            newStats.add(locationStat);
 
         }
+        this.allStats = newStats;
     }
 }
