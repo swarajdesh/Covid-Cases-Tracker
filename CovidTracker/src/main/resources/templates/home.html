@@ -10,6 +10,7 @@
 </head>
 
 <body>
+<div class = "container">
 <h1>Covid Cases Tracker</h1>
 <p>This application lists the current number of covid cases around the world</p>
 
@@ -18,18 +19,23 @@
     <p class="lead">Total Covid cases reported till date</p>
 </div>
 
-<table>
+
+    <table class="table">
     <tr>
         <th>State</th>
         <th>Country</th>
         <th>Total Cases Reported</th>
+        <th>Changes since last day</th>
     </tr>
     <tr th:each="locationStat : ${locationStats}">
         <td th:text="${locationStat.state}">Onions</td>
         <td th:text="${locationStat.country}">2.41</td>
         <td th:text="${locationStat.latestTotalCases}">0</td>
+        <td th:text="${locationStat.diffFromPrevDay}">0</td>
     </tr>
-</table>
+</table></div>
+
+
 
 </body>
 
